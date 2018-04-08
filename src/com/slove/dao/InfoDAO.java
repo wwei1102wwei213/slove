@@ -14,7 +14,7 @@ import com.slove.util.Tools;
 
 public class InfoDAO {
 	
-	private final static String table_topic = "test";
+	private final static String table_info = "test";
 
 	private final static String col_id = "id";
 	private final static String col_username = "username";
@@ -29,7 +29,7 @@ public class InfoDAO {
 					preparedStatement.setString(1, username);					
 				}
 			}
-			String sql = "select * from "+table_topic
+			String sql = "select * from "+table_info
 					+ " where "+col_username+"=? ";
 
 			Select select = new Select();
@@ -55,7 +55,7 @@ public class InfoDAO {
 	public int insertInfo(final InfoEntity infoEntity) {
 		int infoId = -1;
 		try {
-			String sql = "insert into "+table_topic + "(" + col_username + ","
+			String sql = "insert into "+table_info + "(" + col_username + ","
 					+ col_password + "," + col_gender + ") values(?,?,?)";
 			class SetParam implements SetParameter {
 				public void set(PreparedStatement preparedStatement)
@@ -78,7 +78,7 @@ public class InfoDAO {
 							preparedStatement.setString(1, infoEntity.getUsername());
 						}
 					}
-					sql = "select id from "+ table_topic + " where " + col_username + "=? ";
+					sql = "select id from "+ table_info + " where " + col_username + "=? ";
 
 					Select select = new Select();
 					List list = select.selectRS(sql, new SetSelectParam());
@@ -114,7 +114,7 @@ public class InfoDAO {
 
 				}
 			}
-			String sql = "select * from " + table_topic
+			String sql = "select * from " + table_info
 					+ " where "+col_username+"=? and "+col_password+"=? ";
 
 			Select select = new Select();
@@ -148,7 +148,7 @@ public class InfoDAO {
 					
 				}
 			}
-			String sql = "select * from " + table_topic + " where "+col_id+"="+infoid;
+			String sql = "select * from " + table_info + " where "+col_id+"="+infoid;
 
 			Select select = new Select();
 			List list = select.selectRS(sql,new SetParam());			
