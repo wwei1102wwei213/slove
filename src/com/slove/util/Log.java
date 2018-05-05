@@ -19,7 +19,7 @@ public class Log {
 	 	sysException=null;
 	 	//使用相对路径
 	     String path=(Log.class.getClassLoader().getResource("")).toString();
-	     //System.out.println(path);
+	     System.out.println(path);
 	    //去掉file:/
 	     path=path.substring(6);
 	   //  System.out.println(path);     

@@ -115,8 +115,7 @@ public class InfoDAO {
 				}
 			}
 			String sql = "select * from " + table_info
-					+ " where "+col_username+"=? and "+col_password+"=? ";
-
+					+ " where "+col_username+"=? and "+col_password+"=?";
 			Select select = new Select();
 			List list = select.selectRS(sql,new SetParam());
 			

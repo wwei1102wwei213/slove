@@ -2,14 +2,17 @@ package com.slove.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.util.*;
 
@@ -52,7 +55,6 @@ public class Tools {
 		
 	}
 
-	static Log logger = Log.getInstance();
 
 	/** Creates a new instance of Tools */
 	public Tools() {
@@ -72,27 +74,6 @@ public class Tools {
 	
 	}
 	
-
-	public static void main(String[] args) {
-		try {
-
-			// Calendar cal = Calendar.getInstance();
-			// cal.set(2007,1,1);
-			// int maxDate = cal.getActualMaximum(Calendar.DATE);
-			// System.out.println(maxDate);
-			// for (int i=1;i<=12;i++)
-			// {
-			// System.out.print(i+"---");
-			// Tools.getLastDay(2008,i);
-			// }
-			//
-			System.out.println(Tools.addZero("1", 4));
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-
-	}
 
 	/**
 	 * 根据给定的年月，得到最后一天
@@ -513,7 +494,7 @@ public class Tools {
 			// cal.roll(Calendar.DAY_OF_YEAR, false);
 			d2 = formatter.format(cal.getTime()).toString();
 		} catch (Exception e) {
-			logger.sysException.info("", e);
+			Log.getInstance().sysException.info("", e);
 		}
 
 		return d2;
@@ -556,7 +537,7 @@ public class Tools {
 			cal.roll(Calendar.DAY_OF_YEAR, false);
 			d2 = formatter.format(cal.getTime()).toString();
 		} catch (Exception e) {
-			logger.sysException.info("Tools.getbeforeDate", e);
+			Log.getInstance().sysException.info("Tools.getbeforeDate", e);
 		}
 
 		return d2;
@@ -807,5 +788,158 @@ public class Tools {
 		if ("".equals(str)) return true;
 		if ("0".equals(str)) return true;
 		return false;
+	}
+	
+	public static String getTimeStrNow() {
+		return System.currentTimeMillis()/1000 + "";
+	}
+	
+	private static final String hexDigits[] = { "0", "1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+
+    /***
+     * MD5加密
+     * @param origin
+     * @param charsetname
+     * @return
+     */
+    public static String MD5Encode(String origin, String charsetname) {
+        String resultString = null;
+        try {
+            resultString = new String(origin);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            if (charsetname == null || "".equals(charsetname))
+                resultString = byteArrayToHexString(md.digest(resultString
+                        .getBytes()));
+            else
+                resultString = byteArrayToHexString(md.digest(resultString
+                        .getBytes(charsetname)));
+        } catch (Exception exception) {
+        }
+        return resultString;
+    }
+
+    /**
+     * 解密base64
+     * @param content
+     * @return
+     */
+    public static String decodeBase64(String content) {
+        if (isEmpty(content)) {
+            return "";
+        }
+        String temp = "";
+        try {
+            temp = new String(Base64.decodeBase64(content.getBytes()));
+        } catch (Exception e) {
+            return "";
+        }
+        return temp.trim();
+    }
+
+    /**
+     * 加密base64
+     * @param content
+     * @return
+     */
+    public static String encode(String content) {
+        if (isEmpty(content)) {
+            return "";
+        }
+        return new String(Base64.encodeBase64(content.getBytes())).trim();
+    }
+
+
+    /***
+     * 先URLDecoder后解Base64
+     * @param content
+     * @return
+     */
+    public static String decodeURLAndBase64(String content) {
+        if (isEmpty(content)) {
+            return "";
+        }
+        String temp = "";
+        try {
+            temp = URLDecoder.decode(content);
+            temp = new String(Base64.decodeBase64(temp.getBytes()));
+        } catch (Exception e) {
+            return "";
+        }
+        return temp.trim();
+    }
+
+    /**
+     * 先Base64后URLEncoder
+     * @param content
+     * @return
+     */
+    public static String encodeBase64AndURL(String content) {
+        if (isEmpty(content)) {
+            return "";
+        }
+        String str = new String(Base64.encodeBase64(content.getBytes())).trim();
+        return URLEncoder.encode(str);
+    }
+
+    private static String byteArrayToHexString(byte b[]) {
+        StringBuffer resultSb = new StringBuffer();
+        for (int i = 0; i < b.length; i++)
+            resultSb.append(byteToHexString(b[i]));
+
+        return resultSb.toString();
+    }
+
+    private static String byteToHexString(byte b) {
+        int n = b;
+        if (n < 0)
+            n += 256;
+        int d1 = n / 16;
+        int d2 = n % 16;
+        return hexDigits[d1] + hexDigits[d2];
+    }
+    
+    public static Map<String, String> paramsToMap(String params) {
+    	Map<String, String> map = new HashMap<>();
+    	try {
+			String dcs = Tea.decryptByTea(params);
+			System.out.println("params:"+dcs);
+			String[] args = dcs.split("&");
+			if (args!=null&&args.length>0){
+				for (int i=0;i<args.length;i++){
+					String[] arr = args[i].split("=");
+					if (arr!=null&&arr.length>0){
+						if (arr.length==1){
+							map.put(URLDecoder.decode(arr[0]), null);
+						} else {
+							map.put(URLDecoder.decode(arr[0]), URLDecoder.decode(arr[1]));
+						} 
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	return map;
+    }
+    
+    public static void main(String[] args) {
+//		String str = "http://df.sdf.sad?df=kj&sddf.,~!@#%$";
+		/*String ec = encodeBase64AndURL(str);
+		System.out.println(ec);
+		System.out.println(URLEncoder.encode(str));
+		System.out.println(URLDecoder.decode(URLEncoder.encode(str)));
+		System.out.println(ec);
+		System.out.println(decodeURLAndBase64(ec));
+		String tec = Tea.encryptByTea(ec);
+		System.out.println(tec);
+		String tdc = Tea.decryptByTea(tec);
+		System.out.println(tdc);
+		System.out.println(decodeURLAndBase64(tdc));*/
+    	String str = "data=332&dff=2121&dddd=dffgf";
+		Map<String, String> map = paramsToMap(Tea.encryptByTea(str));
+		for (String key:map.keySet()){
+			System.out.println("key:"+key+",value:"+map.get(key));
+		}
 	}
 }

@@ -304,23 +304,18 @@ public class DiscussDao {
 			class SetParam implements SetParameter {
 				public void set(PreparedStatement preparedStatement)
 						throws Exception {
-					if (queryType!=null) {
-						preparedStatement.setString(1, queryType);
-					}
-					if (queryAuthor!=null) {
-						preparedStatement.setString(4, queryAuthor);
-					}
+
 				}
 			}
 			String sql = "select * from " + table_discuss + " where ";
 			if (limitId>0) {
 				sql += (orderType==1?col_replyTime:col_id) + "<" + limitId + " and ";
 			} 
-			if (queryType!=null) {
-				sql += col_type + "=? and ";
+			if (!Tools.isNull(queryType)) {
+				sql += col_type + "='"+queryType+"' and ";
 			}
-			if (queryAuthor!=null) {
-				sql += col_author + "=? and ";
+			if (!Tools.isNull(queryAuthor)) {
+				sql += col_author + "='"+queryAuthor+"' and ";
 			}
 			if (queryLabel>0) {
 				sql += col_label + "&" + queryLabel + "=" + queryLabel;
@@ -335,7 +330,8 @@ public class DiscussDao {
 			sql += " limit " + limitSize;
 			Select select = new Select();
 			List list = select.selectRS(sql,new SetParam());			
-			if (list!=null&&list.size()!=0) {				
+			if (list!=null&&list.size()!=0) {
+				entities = new DiscussEntity[list.size()];
 				for (int i=0;i<list.size();i++) {
 					String DiscussID = String.valueOf(((Map) list.get(i)).get(col_id));
 					String type = String.valueOf(((Map) list.get(i)).get(col_type));
@@ -362,7 +358,7 @@ public class DiscussDao {
 				}
 
 			} else {
-
+				
 			}		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
