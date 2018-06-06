@@ -6,7 +6,7 @@ public class Config {
 	//发布时用
 //	public static final String webSite="http://192.168.1.10";
 //	public static final String webSite="http://119.23.232.112";
-	public static final String webSite="http://172.16.252.82";
+	public static final String webSite="http://172.18.254.92";
 	
 	//测试开发机模拟器上android客户端时使用，开发机模拟器上android客户端必须用ip直接访问
 	//public static final String webSite="http://192.168.1.101";
@@ -28,10 +28,10 @@ public class Config {
 	}
 	
 
-	 public static void main(String[] args)
+	 /*public static void main(String[] args)
 	 {
 		 System.out.println(siteRoot);
-	 }
+	 }*/
 	
 	 
 

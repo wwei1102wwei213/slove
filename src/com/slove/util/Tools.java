@@ -902,7 +902,7 @@ public class Tools {
     public static Map<String, String> paramsToMap(String params) {
     	Map<String, String> map = new HashMap<>();
     	try {
-			String dcs = Tea.decryptByTea(params);
+			String dcs = AES.decode(params);
 			System.out.println("params:"+dcs);
 			String[] args = dcs.split("&");
 			if (args!=null&&args.length>0){
@@ -921,6 +921,17 @@ public class Tools {
 			// TODO: handle exception
 		}
     	return map;
+    }
+    
+    public static String buildToken(String tagStr, String loginType, String createTime){
+    	String str = tagStr + "&" + loginType + "&" + createTime;
+    	String result = "";
+    	try {
+			result = Tea.encryptByTea(str);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	return result;
     }
     
     public static void main(String[] args) {

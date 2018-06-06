@@ -95,7 +95,6 @@ public class DiscussDao {
 					preparedStatement.setString(6, entity.getLabelName());
 					preparedStatement.setString(7, entity.getCreateTime());
 					preparedStatement.setString(8, entity.getReplyTime());
-
 				}
 			}
 			Modify modify = new Modify();

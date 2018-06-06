@@ -11,7 +11,9 @@
 	boolean infoIsExist = false;
 	InfoEntity entity = null;
 	try {
-		String infoid = request.getParameter("InfoID");
+		String params = request.getParameter("params");
+		Map<String, String> map = Tools.paramsToMap(params);		
+		String infoid = map.get("InfoID");
 		if (Tools.isEmptyOrZero(infoid)) {
 			status = Const.STATUS_LOGIN_ERROR;
 			msg = Const.STATUS_LOGIN_ERROR_MSG + "isEmptyOrZero infoid";
@@ -33,12 +35,8 @@
 		buffer.append("\"status\":\"" + status + "\",");
 		buffer.append("\"msg\":\"" + msg + "\",");
 		if (Const.STATUS_OK == status) {
-			buffer.append("\"data\":\"{");
-			buffer.append("\"InfoID\":\"" + entity.getId() + "\",");
-			buffer.append("\"UserName\":\"" + entity.getUsername() + "\",");
-			buffer.append("\"Password\":\"" + entity.getPassword() + "\",");
-			buffer.append("\"gender\":\"" + entity.getGender() + "\"");
-			buffer.append("}");
+			buffer.append("\"data\":");
+			buffer.append(entity.toString());			
 		}
 		buffer.append("}");
 		out.write(buffer.toString());

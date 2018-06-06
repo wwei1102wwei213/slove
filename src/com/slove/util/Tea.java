@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 public class Tea {
 	public static int fn = 0;//在解密服务端返回的数据时，fn需要置0
 	private final static int[] KEY = new int[]{//加密解密所用的KEY
-			0x1223311, 0x889922, 0x33, 0x44
+			0x1223311, 0x889922, 0x33333333, 0x44444444
 	};
 
 	public static void setKey(int[] key){

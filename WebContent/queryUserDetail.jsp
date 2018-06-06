@@ -2,7 +2,6 @@
 <%@page import="com.slove.entity.UserEntity"%>
 <%@page import="com.slove.util.Const"%>
 <%@page import="com.slove.util.Tools"%>
-
 <%@ page contentType="text/html; charset=UTF-8"%><%@page
 	import="java.util.*"%>
 <%
@@ -11,11 +10,9 @@
 	UserEntity userEntity = null;
 	boolean userIsExist = false;
 	try {
-
 		String username = request.getParameter("username");
 		String md5password = request.getParameter("md5password");
 		username=Tools.FileToUtf8(username);
-
 		md5password=Tools.FileToUtf8(md5password);
 		UserDAO userDAO = new UserDAO();
 		userIsExist = userDAO.checkUserIsExist(username, md5password);
@@ -25,10 +22,8 @@
 		} else {
 			userEntity = userDAO.queryDetailByUsername(username, md5password);
 		}
-
 	} catch (Exception e) {//myPic = null;
 		e.printStackTrace();
-
 	} finally {
 		//servlet/ApkUpdateServlet输出的中文也是乱码，android 上不乱码
 		StringBuffer buffer = new StringBuffer();

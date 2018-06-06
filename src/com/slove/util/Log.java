@@ -19,7 +19,7 @@ public class Log {
 	 	sysException=null;
 	 	//使用相对路径
 	     String path=(Log.class.getClassLoader().getResource("")).toString();
-	     System.out.println(path);
+//	     System.out.println(path);
 	    //去掉file:/
 	     path=path.substring(6);
 	   //  System.out.println(path);     
@@ -45,12 +45,12 @@ public class Log {
 	     singleton = new Log();
 	 }
 	 
-	 public static void main(String[] args) {
+	 /*public static void main(String[] args) {
 		System.out.print("t5");
 		Log logger = Log.getInstance();
 		logger.sysException.info("wap6");
 
 
-	}
+	}*/
 
 }
