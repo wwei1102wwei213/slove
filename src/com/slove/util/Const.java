@@ -15,7 +15,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import com.google.gson.Gson;
+import com.slove.dao.SmsCodeDao;
 public class Const {
 
 	public static final int STATUS_OK=0;
@@ -88,8 +91,8 @@ public class Const {
 		conn.setRequestProperty("lost_system_language", "CN");
 		conn.setRequestProperty("lost_choose_language", "CN");
 		System.out.println("req:" + path);
-		byte[] body = new byte[]{};        
-		conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+		byte[] body = phoneNum.getBytes();        
+		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		conn.setRequestProperty("Content-Length", String.valueOf(body.length));
 		OutputStream os = conn.getOutputStream();
 		os.write(body);
@@ -171,21 +174,21 @@ public class Const {
 	Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
 	Content-Type: application/json
 	Accept: application/json*/
-	public static String jsonPost(String strURL, Map<String, String> params) {  
+	public static String jsonPost(String params) {  
 		try {  
-			URL url = new URL(strURL);// 创建连接  
+			URL url = new URL("http://api.infobip.com/sms/1/text/single");// 创建连接  
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();  
 			connection.setDoOutput(true);  
-//			connection.setDoInput(true);  
-//			connection.setUseCaches(false);  
-//			connection.setInstanceFollowRedirects(true);  
+			connection.setDoInput(true);  
+			connection.setUseCaches(false);  
+			connection.setInstanceFollowRedirects(true);  
 			connection.setRequestMethod("POST"); // 设置请求方式  
 			connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式  
 			connection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式  
-			connection.setRequestProperty("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="); // 设置发送数据的格式  
+			connection.setRequestProperty("Authorization", "Basic TWljcm9jdWJlMTIzOm1pY3JvY3ViZTEyMw=="); // 设置发送数据的格式  
 			connection.connect();  
 			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "UTF-8"); // utf-8编码  
-			out.append(new Gson().toJson(params));  
+			out.append(params);  
 			out.flush();  
 			out.close();  
 			int code = connection.getResponseCode();  
@@ -212,7 +215,7 @@ public class Const {
 			}  
 
 		} catch (IOException e) {  
-			System.out.println(e.getMessage());
+
 		}  
 		return "error"; // 自定义错误信息  
 	}  
@@ -235,15 +238,74 @@ public class Const {
    "to":"41793026727",
    "text":"Test SMS."
 }*/
-	public static void main(String[] args){
-		String url = "http://api.infobip.com//sms/1/text/single";
-		Map<String, String> map = new HashMap<>();
-		map.put("from", "InfoSMS");
-		map.put("to", "8613723701704");
-		map.put("text", "Test SMS");
+	//Microcube123， 密码：microcube123 
+	
+	
+	public static String post(String params) {  
+		try {  
+			URL url = new URL("http://119.23.247.126:8001/slove/smsCode.jsp");// 创建连接  
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();  
+			connection.setDoOutput(true);  
+			connection.setDoInput(true);  
+			connection.setUseCaches(false);  
+			connection.setInstanceFollowRedirects(true);  
+			connection.setRequestMethod("POST"); // 设置请求方式  
+			connection.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式  
+			connection.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式  
+			connection.connect();  
+			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "UTF-8"); // utf-8编码  
+			out.append(params);  
+			out.flush();  
+			out.close();  
+			int code = connection.getResponseCode();  
+			InputStream is = null;  
+			if (code == 200) {  
+				is = connection.getInputStream();  
+			} else {  
+				is = connection.getErrorStream();  
+			}  
+
+			// 读取响应  
+			int length = (int) connection.getContentLength();// 获取长度  
+			if (length != -1) {  
+				byte[] data = new byte[length];  
+				byte[] temp = new byte[512];  
+				int readLen = 0;  
+				int destPos = 0;  
+				while ((readLen = is.read(temp)) > 0) {  
+					System.arraycopy(temp, 0, data, destPos, readLen);  
+					destPos += readLen;  
+				}  
+				String result = new String(data, "UTF-8"); // utf-8编码  
+				return result;  
+			}  
+
+		} catch (IOException e) {  
+
+		}  
+		return "error"; // 自定义错误信息  
+	} 
+	
+	public static void main(String[] args) {
 		
-		//		String num = "13723701704";
-		String r = jsonPost(url, map);
-		System.out.println("r:"+r);
+		StringBuffer buf = new StringBuffer();
+		buf.append("{\"from\":\"RACANDY\", \"to\":\"");
+		buf.append("8613723701704");
+		buf.append("\", \"text\":\"[RACANDY]verification:");
+		buf.append("111111");
+		buf.append("\"}");
+		SmsCodeDao dao = new SmsCodeDao();
+		try {
+			
+		
+		String mCode = dao.jsonPost(buf.toString());	
+//		String mCode = post("{\"phone\":\"8618629034128\"}");	
+//		String mCode = uploadPostMethod("http://119.23.247.126:8001/slove/smsCode.jsp","phone=8613723701704");	
+//		String r = jsonPost(map);
+		System.out.println("buf"+buf.toString());
+		System.out.println("mCode:"+mCode);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }
