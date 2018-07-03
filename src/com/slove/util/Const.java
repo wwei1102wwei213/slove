@@ -24,6 +24,8 @@ public class Const {
 	public static final int STATUS_OK=0;
 	public static final String STATUS_OK_MSG="成功";
 
+	public static final int STATUS_CHECK_ERROR =1;
+	
 	public static final int STATUS_PARAMS_ERROR = 111;
 	public static final String STATUS_PARAMS_ERROR_MSG="参数错误";
 
@@ -33,7 +35,7 @@ public class Const {
 	public static final int STATUS_SERVER_ERROR =113;
 	public static final String STATUS_SERVER_ERROR_MSG="服务器代码执行出错";
 
-	public static final int STATUS_DELETE_ERROR = 11;
+	public static final int STATUS_DELETE_ERROR = 114;
 	public static final String STATUS_DELETE_ERROR_MSG="删除失败";	
 
 	public static final int STATUS_LOGIN_ERROR =102;
