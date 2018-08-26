@@ -1,6 +1,7 @@
 package com.slove.dao;
 
 import java.sql.PreparedStatement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,10 @@ public class DiscussDao {
 	private final static String col_labelName = "labelName";
 	private final static String col_createTime = "createTime";
 	private final static String col_replyTime = "replyTime";
+	private final static String col_images = "images";
+	private final static String col_views = "views";
+	private final static String col_likes = "likes";
+	private final static String col_favorites = "favorites";
 
 	public DiscussEntity[] queryAll() {
 		DiscussEntity[] entitys = null;
@@ -33,6 +38,7 @@ public class DiscussDao {
 			String sql = "select " + col_id + "," + col_type + "," + col_title + ","
 					+ col_content + "," + col_author + "," + col_label+ ","
 					+ col_labelName + "," + col_createTime+ "," + col_replyTime
+					+ col_images + "," + col_views+ "," + col_likes + "," + col_favorites
 					+ " from "+ table_discuss +" order by id desc";
 
 			Select select = new Select();
@@ -48,6 +54,10 @@ public class DiscussDao {
 				String labelName = String.valueOf(((Map) list.get(i)).get(col_labelName));
 				String createTime = String.valueOf(((Map) list.get(i)).get(col_createTime));
 				String replyTime = String.valueOf(((Map) list.get(i)).get(col_replyTime));
+				String images = String.valueOf(((Map) list.get(i)).get(col_images));
+				String views = String.valueOf(((Map) list.get(i)).get(col_views));
+				String likes = String.valueOf(((Map) list.get(i)).get(col_likes));
+				String favorites = String.valueOf(((Map) list.get(i)).get(col_favorites));
 
 				DiscussEntity entity = new DiscussEntity();
 				entity.setId(Integer.parseInt(id));
@@ -59,7 +69,10 @@ public class DiscussDao {
 				entity.setLabelName(labelName);
 				entity.setCreateTime(createTime);
 				entity.setReplyTime(replyTime);
-
+				entity.setImages(images);
+				entity.setViews(Integer.parseInt(views));
+				entity.setLikes(Integer.parseInt(likes));
+				entity.setFavorites(Integer.parseInt(favorites));
 				entitys[i] = entity;
 
 			}
@@ -83,7 +96,9 @@ public class DiscussDao {
 			String sql = "insert into "+ table_discuss + "(" + col_type + "," + col_title + ","
 					+ col_content + "," + col_author + "," + col_label
 					+ "," + col_labelName + "," + col_createTime + ","
-					+ col_replyTime + ") values(?,?,?,?,?,?,?,?)";
+					+ col_replyTime + ","
+					+ col_images + "," + col_views+ "," + col_likes + "," + col_favorites
+					+ ") values(?,?,?,?,?,?,?,?,?,?,?,?)";
 			class SetParam implements SetParameter {
 				public void set(PreparedStatement preparedStatement)
 						throws Exception {
@@ -95,6 +110,10 @@ public class DiscussDao {
 					preparedStatement.setString(6, entity.getLabelName());
 					preparedStatement.setString(7, entity.getCreateTime());
 					preparedStatement.setString(8, entity.getReplyTime());
+					preparedStatement.setString(9, entity.getImages());
+					preparedStatement.setInt(10, entity.getViews());
+					preparedStatement.setInt(11, entity.getLikes());
+					preparedStatement.setInt(12, entity.getFavorites());
 				}
 			}
 			Modify modify = new Modify();
@@ -137,6 +156,10 @@ public class DiscussDao {
 				String labelName = String.valueOf(((Map) list.get(i)).get(col_labelName));
 				String createTime = String.valueOf(((Map) list.get(i)).get(col_createTime));
 				String replyTime = String.valueOf(((Map) list.get(i)).get(col_replyTime));
+				String images = String.valueOf(((Map) list.get(i)).get(col_images));
+				String views = String.valueOf(((Map) list.get(i)).get(col_views));
+				String likes = String.valueOf(((Map) list.get(i)).get(col_likes));
+				String favorites = String.valueOf(((Map) list.get(i)).get(col_favorites));
 
 				entity = new DiscussEntity();
 				entity.setId(Integer.parseInt(DiscussID));
@@ -148,6 +171,10 @@ public class DiscussDao {
 				entity.setLabelName(labelName);
 				entity.setCreateTime(createTime);
 				entity.setReplyTime(replyTime);
+				entity.setImages(images);
+				entity.setViews(Integer.parseInt(views));
+				entity.setLikes(Integer.parseInt(likes));
+				entity.setFavorites(Integer.parseInt(favorites));
 			} else {
 
 			}		
@@ -185,7 +212,8 @@ public class DiscussDao {
 			sql += " limit " + limitSize;
 			Select select = new Select();
 			List list = select.selectRS(sql,new SetParam());			
-			if (list!=null&&list.size()!=0) {				
+			if (list!=null&&list.size()!=0) {
+				entities = new DiscussEntity[list.size()];
 				for (int i=0;i<list.size();i++) {
 					String DiscussID = String.valueOf(((Map) list.get(i)).get(col_id));
 					String type = String.valueOf(((Map) list.get(i)).get(col_type));
@@ -196,6 +224,10 @@ public class DiscussDao {
 					String labelName = String.valueOf(((Map) list.get(i)).get(col_labelName));
 					String createTime = String.valueOf(((Map) list.get(i)).get(col_createTime));
 					String replyTime = String.valueOf(((Map) list.get(i)).get(col_replyTime));
+					String images = String.valueOf(((Map) list.get(i)).get(col_images));
+					String views = String.valueOf(((Map) list.get(i)).get(col_views));
+					String likes = String.valueOf(((Map) list.get(i)).get(col_likes));
+					String favorites = String.valueOf(((Map) list.get(i)).get(col_favorites));
 
 					DiscussEntity entity = new DiscussEntity();
 					entity.setId(Integer.parseInt(DiscussID));
@@ -207,6 +239,10 @@ public class DiscussDao {
 					entity.setLabelName(labelName);
 					entity.setCreateTime(createTime);
 					entity.setReplyTime(replyTime);
+					entity.setImages(images);
+					entity.setViews(Integer.parseInt(views));
+					entity.setLikes(Integer.parseInt(likes));
+					entity.setFavorites(Integer.parseInt(favorites));
 
 					entities[i] = entity;
 				}
@@ -249,7 +285,8 @@ public class DiscussDao {
 			sql += " limit " + limitSize;
 			Select select = new Select();
 			List list = select.selectRS(sql,new SetParam());			
-			if (list!=null&&list.size()!=0) {				
+			if (list!=null&&list.size()!=0) {		
+				entities = new DiscussEntity[list.size()];
 				for (int i=0;i<list.size();i++) {
 					String DiscussID = String.valueOf(((Map) list.get(i)).get(col_id));
 					String type = String.valueOf(((Map) list.get(i)).get(col_type));
@@ -260,6 +297,10 @@ public class DiscussDao {
 					String labelName = String.valueOf(((Map) list.get(i)).get(col_labelName));
 					String createTime = String.valueOf(((Map) list.get(i)).get(col_createTime));
 					String replyTime = String.valueOf(((Map) list.get(i)).get(col_replyTime));
+					String images = String.valueOf(((Map) list.get(i)).get(col_images));
+					String views = String.valueOf(((Map) list.get(i)).get(col_views));
+					String likes = String.valueOf(((Map) list.get(i)).get(col_likes));
+					String favorites = String.valueOf(((Map) list.get(i)).get(col_favorites));
 
 					DiscussEntity entity = new DiscussEntity();
 					entity.setId(Integer.parseInt(DiscussID));
@@ -271,6 +312,10 @@ public class DiscussDao {
 					entity.setLabelName(labelName);
 					entity.setCreateTime(createTime);
 					entity.setReplyTime(replyTime);
+					entity.setImages(images);
+					entity.setViews(Integer.parseInt(views));
+					entity.setLikes(Integer.parseInt(likes));
+					entity.setFavorites(Integer.parseInt(favorites));
 
 					entities[i] = entity;
 				}
@@ -322,15 +367,20 @@ public class DiscussDao {
 			if (sql.endsWith(" and ")) {
 				sql = sql.substring(0, sql.length()-5);
 			}
+			if (sql.endsWith(" where ")) {
+				sql = sql.substring(0, sql.length()-7);
+			}
 			sql += " order by " + (orderType==1?col_replyTime:col_id) + " desc";		
-			if (limitSize<=0||limitSize>20) {
-				limitSize = 20;
+			if (limitSize<=0||limitSize>15) {
+				limitSize = 15;
 			} 
 			sql += " limit " + limitSize;
+			Tools.writeLog(sql);
 			Select select = new Select();
 			List list = select.selectRS(sql,new SetParam());			
 			if (list!=null&&list.size()!=0) {
 				entities = new DiscussEntity[list.size()];
+				Map<String, InfoEntity> map = queryInfoDetail(list);
 				for (int i=0;i<list.size();i++) {
 					String DiscussID = String.valueOf(((Map) list.get(i)).get(col_id));
 					String type = String.valueOf(((Map) list.get(i)).get(col_type));
@@ -341,6 +391,10 @@ public class DiscussDao {
 					String labelName = String.valueOf(((Map) list.get(i)).get(col_labelName));
 					String createTime = String.valueOf(((Map) list.get(i)).get(col_createTime));
 					String replyTime = String.valueOf(((Map) list.get(i)).get(col_replyTime));
+					String images = String.valueOf(((Map) list.get(i)).get(col_images));
+					String views = String.valueOf(((Map) list.get(i)).get(col_views));
+					String likes = String.valueOf(((Map) list.get(i)).get(col_likes));
+					String favorites = String.valueOf(((Map) list.get(i)).get(col_favorites));
 
 					DiscussEntity entity = new DiscussEntity();
 					entity.setId(Integer.parseInt(DiscussID));
@@ -352,7 +406,14 @@ public class DiscussDao {
 					entity.setLabelName(labelName);
 					entity.setCreateTime(createTime);
 					entity.setReplyTime(replyTime);
-
+					entity.setImages(images);
+					entity.setViews(Integer.parseInt(views));
+					entity.setLikes(Integer.parseInt(likes));
+					entity.setFavorites(Integer.parseInt(favorites));
+					if (map.get(author)!=null) {
+						entity.setAuthorName(map.get(author).getNickName());
+						entity.setAuthorIcon(map.get(author).getIcon());
+					}							
 					entities[i] = entity;
 				}
 
@@ -365,6 +426,21 @@ public class DiscussDao {
 			Tools.writeException(e);
 		}
 		return entities;
+	}
+	
+	private Map<String, InfoEntity> queryInfoDetail(List list) {
+		Map<String, InfoEntity> map = new HashMap<>();
+		InfoDAO dao = new InfoDAO();
+		for (int i=0;i<list.size();i++) {
+			String author = String.valueOf(((Map) list.get(i)).get(col_author));
+			if (!map.containsKey(author)) {
+				InfoEntity entity = dao.queryDetailByID(author);
+				if (entity!=null) {
+					map.put(author, entity);
+				}
+			}
+		}
+		return map;
 	}
 
 	/**

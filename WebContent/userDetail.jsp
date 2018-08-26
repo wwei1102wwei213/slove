@@ -32,7 +32,7 @@
 	} finally {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("{");
-		buffer.append("\"status\":\"" + status + "\",");
+		buffer.append("\"status\":" + status + ",");
 		buffer.append("\"msg\":\"" + msg + "\",");
 		if (Const.STATUS_OK == status) {
 			buffer.append("\"data\":");

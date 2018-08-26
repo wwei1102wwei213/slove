@@ -10,12 +10,15 @@
 	String msg = Const.STATUS_OK_MSG;
 	boolean infoIsExist = false;
 	try {
-		String labelName = request.getParameter("labelName");
-		String title = request.getParameter("title");
-		String label = request.getParameter("label");
-		String type = request.getParameter("type");
-		String content = request.getParameter("content");
-		String InfoID = request.getParameter("InfoID");
+		String params = request.getParameter("params");
+		Map<String, String> map = Tools.paramsToMap(params);
+		String labelName = map.get("labelName");
+		String title = map.get("title");
+		String label = map.get("label");
+		String type = map.get("type");
+		String content = map.get("content");
+		String InfoID = map.get("InfoID");
+		String Images = map.get("images");
 		if (Tools.isEmptyOrZero(InfoID) || Tools.isNull(title) || Tools.isNull(content)) {
 			status = Const.STATUS_PARAMS_ERROR;
 			msg = Const.STATUS_PARAMS_ERROR_MSG + ", params is empty for someone!";
@@ -26,6 +29,7 @@
 			type = Tools.FileToUtf8(type);
 			label = Tools.FileToUtf8(label);
 			InfoID = Tools.FileToUtf8(InfoID);
+			Images = Tools.FileToUtf8(Images);
 			DiscussEntity entity = new DiscussEntity();
 			int infoId = Integer.parseInt(InfoID);			
 			int intLabel = 0;
@@ -41,6 +45,7 @@
 			String time = Tools.getTimeStrNow();
 			entity.setCreateTime(time);
 			entity.setReplyTime(time);
+			entity.setImages(Images);
 			DiscussDao dao = new DiscussDao();
 			int id = dao.insertDiscuss(entity);
 			if (id<1){
@@ -54,7 +59,7 @@
 	} finally {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("{");
-		buffer.append("\"status\":\"" + status + "\",");
+		buffer.append("\"status\":" + status + ",");
 		buffer.append("\"msg\":\"" + msg + "\"");		
 		buffer.append("}");
 		out.write(buffer.toString());

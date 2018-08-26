@@ -5,30 +5,33 @@
 	int status = Const.STATUS_OK;
 	String msg = Const.STATUS_OK_MSG;
 	boolean infoIsExist = false;
-	String mCode = "-2";
+	String mCode = "";
 	try {
-		String PhoneNum = request.getParameter("phone");		
+		String params = request.getParameter("params");
+		Map<String, String> map = Tools.paramsToMap(params);
+		String PhoneNum = map.get("phone");		
 		if (Tools.isEmpty(PhoneNum)) {
-			status = Const.STATUS_LOGIN_ERROR;
+			status = -1;
 			msg = "phone is empty!";
 		} else {			
 			PhoneNum = Tools.FileToUtf8(PhoneNum);			
 			SmsCodeDao dao = new SmsCodeDao();
-			StringBuffer buf = new StringBuffer();
+			/* StringBuffer buf = new StringBuffer();
 			buf.append("{\"from\":\"InfoSMS\", \"to\":\"");
 			buf.append(PhoneNum);
 			buf.append("\", \"text\":\"[RACANDY]verification:dsfdf");
 			buf.append("111111");
 			buf.append("\"}");
-			mCode = dao.jsonPost(buf.toString());				
+			mCode = dao.jsonPost(buf.toString()); */				
+			mCode = dao.getRadmonCode();				
 		}
 	} catch (Exception e) {
-		status = Const.STATUS_TOKEN_ERROR;
+		status = -2;
 		msg = "Exception PhoneNum";
 	} finally {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("{");
-		buffer.append("\"status\":\"" + status + "\",");
+		buffer.append("\"status\":" + status + ",");
 		buffer.append("\"msg\":\"" + msg + "\",");
 		if (Const.STATUS_OK == status) {
 			buffer.append("\"code\":\"");

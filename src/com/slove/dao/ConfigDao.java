@@ -16,7 +16,7 @@ public class ConfigDao {
 	private final static String col_Update = "Update";
 	private final static String col_Summary = "Summary";
 	private final static String col_Url = "Url";
-	private final static String col_VersionNum = "VersionNum";
+	private final static String col_VersionName = "VersionName";
 	
 	
 	public ConfigEntity queryConfig() {
@@ -35,7 +35,7 @@ public class ConfigDao {
 				String Update = String.valueOf(((Map) list.get(i)).get(col_Update));
 				String Summary = String.valueOf(((Map) list.get(i)).get(col_Summary));
 				String Url = String.valueOf(((Map) list.get(i)).get(col_Url));
-				String VersionNum = String.valueOf(((Map) list.get(i)).get(col_VersionNum));
+				String VersionNum = String.valueOf(((Map) list.get(i)).get(col_VersionName));
 
 				entity = new ConfigEntity();
 				entity.setUpdate(Integer.parseInt(Update));

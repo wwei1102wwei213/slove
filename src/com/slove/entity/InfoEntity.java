@@ -7,19 +7,20 @@ import com.slove.util.Tools;
 
 public class InfoEntity implements Serializable{
 	
-	private int id,Label,Coin;
+	private int id,Label,Coin,Chat;
 	private String NickName,Password,Gender,Token,Icon,CreateTime,Birthday,UnionID,PhoneNum,Location;	
 	
 	public InfoEntity() {
 		super();
 	}	
 	
-	public InfoEntity(int id, int label, int coin, String nickName, String password, String gender, String token,
+	public InfoEntity(int id, int label, int coin, int chat, String nickName, String password, String gender, String token,
 			String icon, String createTime, String birthday, String unionID, String phoneNum, String location) {
 		super();
 		this.id = id;
 		Label = label;
 		Coin = coin;
+		Chat = chat;
 		NickName = nickName;
 		Password = password;
 		Gender = gender;
@@ -73,6 +74,16 @@ public class InfoEntity implements Serializable{
 		Coin = coin;
 	}
 
+	
+	
+
+	public int getChat() {
+		return Chat;
+	}
+
+	public void setChat(int chat) {
+		Chat = chat;
+	}
 
 	/**
 	 * @return the nickName
@@ -268,7 +279,7 @@ public class InfoEntity implements Serializable{
 	public String toString() {
 		String result = "";
 		try {
-			InfoEntity entity = new InfoEntity(id, Label, Coin, NickName, Password, Gender, Token, Icon, CreateTime, Birthday, UnionID, PhoneNum, Location);
+			InfoEntity entity = new InfoEntity(id, Label, Coin, Chat, NickName, Password, Gender, Token, Icon, CreateTime, Birthday, UnionID, PhoneNum, Location);
 			result = new Gson().toJson(entity);
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -1,5 +1,5 @@
 <%@ page contentType="text/xml;charset=UTF-8"%>
-
+<%@page import="java.util.*"%><%@ page import="java.io.*"%>
 <%
 	try {
 	//接收客户端传过来是一个form

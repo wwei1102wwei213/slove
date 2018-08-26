@@ -1,5 +1,5 @@
 <%@page import="com.slove.entity.InfoEntity"%><%@page import="com.slove.entity.TokenEntity"%><%@page import="com.slove.util.Tools"%><%@page import="com.slove.dao.InfoDAO"%>
-<%@page import="com.slove.dao.TokenDAO"%><%@page import="com.slove.util.Const"%><%@ page contentType="text/html; charset=UTF-8"%>
+<%@page import="com.slove.dao.TokenDAO"%><%@page import="com.slove.dao.ChatDao"%><%@page import="com.slove.util.Const"%><%@ page contentType="text/html; charset=UTF-8"%>
 <%@page import="java.util.*"%><%@ page import="java.io.*"%>
 <%
 	int status = Const.STATUS_OK;
@@ -52,6 +52,10 @@
 						int update = tokenDao.updateToken(tokenEntity, 0);
 						if (update>0) {
 							entity.setToken(token);
+							ChatDao chatDao = new ChatDao();
+							if (chatDao.checkUserIsExist(entity.getId()+"")) {
+								entity.setChat(1);
+							}
 						} else {
 							status = Const.STATUS_TOKEN_ERROR;
 							msg = "登录异常，Token写入失败！";
@@ -66,7 +70,7 @@
 	} finally {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("{");
-		buffer.append("\"status\":\"" + status + "\",");
+		buffer.append("\"status\":" + status + ",");
 		buffer.append("\"msg\":\"" + msg + "\",");
 		if (Const.STATUS_OK == status) {
 			buffer.append("\"data\":");

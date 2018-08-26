@@ -5,11 +5,14 @@ import com.google.gson.JsonElement;
 
 public class DiscussEntity {
 
-	private int id,label;
-	private String type,title,content,labelName,createTime,replyTime,author;	
+	private int id,label,views,likes,favorites;
+	private String type,title,content,labelName,createTime,replyTime,images,author,authorName,authorIcon;	
 	public DiscussEntity(){}
+	
 	public DiscussEntity(int id, int label, String type, String title, String content, String labelName,
-			String createTime, String replyTime, String author) {
+			String createTime, String replyTime, String images, String author, String authorName, String authorIcon
+			, int views, int likes, int favorites) {
+		super();
 		this.id = id;
 		this.label = label;
 		this.type = type;
@@ -18,8 +21,15 @@ public class DiscussEntity {
 		this.labelName = labelName;
 		this.createTime = createTime;
 		this.replyTime = replyTime;
+		this.images = images;
 		this.author = author;
+		this.authorName = authorName;
+		this.authorIcon = authorIcon;
+		this.views = views;
+		this.likes = likes;
+		this.favorites = favorites;
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -32,6 +42,33 @@ public class DiscussEntity {
 	public void setLabel(int label) {
 		this.label = label;
 	}
+	
+	
+	
+	public int getViews() {
+		return views;
+	}
+
+	public void setViews(int views) {
+		this.views = views;
+	}
+
+	public int getLikes() {
+		return likes;
+	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
+	public int getFavorites() {
+		return favorites;
+	}
+
+	public void setFavorites(int favorites) {
+		this.favorites = favorites;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -74,11 +111,37 @@ public class DiscussEntity {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+	
+	public String getImages() {
+		return images;
+	}
+
+	public void setImages(String images) {
+		this.images = images;
+	}
+
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+
+	public String getAuthorIcon() {
+		return authorIcon;
+	}
+
+	public void setAuthorIcon(String authorIcon) {
+		this.authorIcon = authorIcon;
+	}
+
 	@Override
 	public String toString() {
 		String result = "";
 		try {
-			DiscussEntity entity = new DiscussEntity(id, label, type, title, content, labelName, createTime, replyTime, author);
+			DiscussEntity entity = new DiscussEntity(id, label, type, title, content, labelName, createTime, 
+					replyTime, images, author, authorName, authorIcon, views, likes, favorites);
 			result = new Gson().toJson(entity);
 		} catch (Exception e) {
 			// TODO: handle exception

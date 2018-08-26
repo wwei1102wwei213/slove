@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 
 import com.google.gson.Gson;
 import com.slove.dao.SmsCodeDao;

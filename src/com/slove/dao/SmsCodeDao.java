@@ -71,4 +71,10 @@ public class SmsCodeDao {
 		return result;  // 自定义错误信息  
 	} 
 	
+	
+	public String getRadmonCode() {
+		int result = (int)(Math.random()*899999) + 100000;
+		return result+"";
+	}
+	
 }
